@@ -1562,22 +1562,24 @@ def make_iso(project, toUSB=False, dev="/dev/sdc1"):
         -publisher "%s" -A "%s"  %s' % (
             label, iso_file, iso_dir, publisher, application, iso_dir)
 
-         the_iso_command = 'xorriso -as mkisofs \
-        -f  -V "%s" -cache-inodes -J -l\
-        -iso-level 3 \
-        -o "%s" \
-        -isohybrid-mbr /usr/lib/syslinux/bios/isohdpfx.bin \
-        -c isolinux/boot.cat \
+        the_iso_command = 'xorriso -as mkisofs \
+        -f -V %s -o %s \
+        -J -joliet-long -cache-inodes \
         -b isolinux/isolinux.bin \
-        -no-emul-boot -boot-load-size 4 -boot-info-table \
+        -c isolinux/boot.cat \
+        -no-emul-boot \
+        -boot-load-size 4 \
+        -boot-info-table \
+        -isohybrid-gpt-basdat \
+        -isohybrid-mbr /usr/lib/syslinux/bios/isohdpfx.bin \
         -eltorito-alt-boot \
         -no-emul-boot \
-        -isohybrid-gpt-basdat \
-        -append_partition 2 0xef %s/efi.img \
-        -appended_part_as_gpt \
+        --append_partition 2 0xef %s/efi.img \
+        --appended_part_as_gpt \
         -e --interval:appended_partition_2:all:: \
-        -partition_cyl_align all \
-        -publisher "%s" -A "%s"  %s' % (
+        -partition_offset 16 \
+        -no-pad \
+        -publisher "%s" -A "%s" %s' % (
             label, iso_file, iso_dir, publisher, application, iso_dir)
 
 
