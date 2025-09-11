@@ -268,7 +268,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuProject.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         self.check_use_project_dir.toggled['bool'].connect(self.le_iso_output_dir.setDisabled) # type: ignore
         self.check_use_project_dir.toggled['bool'].connect(self.btn_browse_iso_output_dir.setDisabled) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
