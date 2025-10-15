@@ -17,7 +17,7 @@ from PyQt5.QtWidgets import QDialog, QTreeWidgetItem
 from PyQt5.QtGui import QBrush, QColor
 
 # UI
-from gui.ui.packages import Ui_PackagesDialog
+from app.gui.ui.packages import Ui_PackagesDialog
 
 
 class PackageWidgetItem(QTreeWidgetItem):

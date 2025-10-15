@@ -30,21 +30,21 @@ from PyQt5.QtCore import Qt  # pyqtSignal, QFile,
 # from gui.ui.main import Ui_MainWindow
 
 # yeni kullanıcı arayüzü
-from gui.ui.mainv2 import Ui_MainWindow
+from app.gui.ui.mainv2 import Ui_MainWindow
 
 
 # Dialogs
-from gui.languages import LanguagesDialog
-from gui.packages import PackagesDialog
-from gui.packagecollection import PackageCollectionDialog
+from app.gui.languages import LanguagesDialog
+from app.gui.packages import PackagesDialog
+from app.gui.packagecollection import PackageCollectionDialog
 
 # Progress Dialog
-from gui.progress import Progress
+from app.gui.progress import Progress
 
 # Repository tools
-from repotools.packages import (Repository, ExIndexBogus, ExPackageCycle,
+from app.repotools.packages import (Repository, ExIndexBogus, ExPackageCycle,
                                 ExPackageMissing, fetch_uri)
-from repotools.project import Project, ExProjectMissing, ExProjectBogus
+from app.repotools.project import Project, ExProjectMissing, ExProjectBogus
 
 import gettext
 

@@ -18,10 +18,10 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QDialog, QFileDialog, QListWidgetItem, QMessageBox 
 from PyQt5.QtGui import QPixmap
 
-from gui.ui.packagecollection import Ui_PackageCollectionDialog
-from gui.packages import PackagesDialog
-from gui.languages import LANGUAGES
-from repotools.packages import PackageCollection, PackageSet, random_id
+from app.gui.ui.packagecollection import Ui_PackageCollectionDialog
+from app.gui.packages import PackagesDialog
+from app.gui.languages import LANGUAGES
+from app.repotools.packages import PackageCollection, PackageSet, random_id
 
 import gettext
 _ = lambda x:gettext.ldgettext("pardusman", x)

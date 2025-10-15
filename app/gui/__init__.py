@@ -16,7 +16,7 @@
 from PyQt5.QtWidgets import QApplication  # , QWidget
 
 # Main form
-from gui.main import MainWindow
+from app.gui.main import MainWindow
 
 
 def gui(args):

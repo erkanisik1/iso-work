@@ -24,7 +24,7 @@ import subprocess
 
 # import pathlib2
 
-from repotools.utility import xterm_title, wait_bus
+from app.repotools.utility import xterm_title, wait_bus
 
 #
 # Utilities

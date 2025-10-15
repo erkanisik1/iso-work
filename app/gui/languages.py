@@ -16,7 +16,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QDialog, QListWidgetItem
 
 # UI
-from gui.ui.languages import Ui_LanguagesDialog
+from app.gui.ui.languages import Ui_LanguagesDialog
 
 LANGUAGES = {
     "ca_ES": "Catalan",

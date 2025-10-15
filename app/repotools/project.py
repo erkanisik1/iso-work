@@ -18,7 +18,7 @@ import platform
 import piksemel
 
 import packages
-from repotools.packages import PackageCollection, PackageSet
+from app.repotools.packages import PackageCollection, PackageSet
 
 
 # no i18n yet

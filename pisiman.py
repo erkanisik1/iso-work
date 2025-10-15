@@ -14,11 +14,11 @@
 # System
 import sys
 import time
-from repotools import packages
+from app.repotools import packages
 
 
 def maker(op, project_file):
-    from repotools import maker, project
+    from app.repotools import maker, project
 
     project = project.Project()
     err = project.open(project_file)
@@ -108,7 +108,7 @@ def main(args):
     elif len(args) == 3:
         maker(args[1], args[2])
     else:
-        import gui
+        import app.gui as gui
         gui.gui(args)
 
 
