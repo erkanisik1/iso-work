@@ -9,3 +9,8 @@ sil
 
 # Project files
 projectFiles/
+*.code-workspace
+.vscode/
+.idea/
+.01/
+.02/

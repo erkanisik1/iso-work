@@ -1356,39 +1356,31 @@ def make_EFI(project, grub=True):
     run("mkfs.vfat -n PisiLinux %s/efi.img" % work_dir)
     run("mount %s/efi.img %s" % (work_dir, efi_tmp))
 
-    os.makedirs(os.path.join(efi_tmp, "EFI/boot"))
+    os.makedirs(os.path.join(efi_tmp, "EFI/BOOT"))
+    #os.makedirs(os.path.join(efi_tmp, "EFI/boot"))
+    
     # os.makedirs(os.path.join(efi_tmp, "boot/efi/"))
 
     # grub ####################################################################
     if grub:
-        run("cp -rf %s/EFI %s/" % ("./data/efi_grub", efi_tmp),
-            ignore_error=True)
-        run("cp -rf %s/EFI %s/" % ("./data/efi_grub", iso_dir),
-            ignore_error=True)
-        run("cp %s/grubx64.efi %s/EFI/boot/bootx64.efi" % (image_dir, iso_dir),
-            ignore_error=True)
-        run("cp %s/grubx64.efi %s/EFI/boot/bootx64.efi" % (image_dir, efi_tmp),
-            ignore_error=True)
-        run("rm -rf %s/EFI/pisi" % iso_dir,
-            ignore_error=True)
-
-        # grub teması icons dizini yüklenmediği için isoya yüklenmesi
+        run("cp -rf %s/EFI %s/" % ("./data/efi_grub", efi_tmp), ignore_error=True)
+        run("cp -rf %s/EFI %s/" % ("./data/efi_grub", iso_dir), ignore_error=True)
+        #run("cp %s/grubx64.efi %s/EFI/boot/grubx64.EFI" % (image_dir, iso_dir), ignore_error=True)
+        run("cp %s/grubx64.efi %s/EFI/boot/grubx64.EFI" % (image_dir, efi_tmp), ignore_error=True)
+        
+        run("rm -rf %s/EFI/pisi" % iso_dir, ignore_error=True)
         run("mkdir -p %s/EFI/boot/grub2/themes" % iso_dir, ignore_error=True)
         run("cp -rf ./data/grub2/bacground.jpg %s/EFI/boot/grub2/themes/pisilinux/bacground.jpg " % iso_dir, ignore_error=True)
         run("cp -R %s/usr/share/grub/themes/pisilinux/ %s/EFI/boot/grub2/themes" % (image_dir, iso_dir), ignore_error=True)
 
        
         # 31-08-2025 eklendi
+        # grub teması icons dizini yüklenmediği için isoya yüklenmesi
         run("cp -rf ./data/grub2/icons %s/EFI/boot/grub2/themes/pisilinux " % iso_dir, ignore_error=True)
 
-
-
-        # run("cp %s/tr.gkb %s/EFI/boot/" % (image_dir, iso_dir),
-        #   ignore_error=True)
-        # run("cp %s/en.gkb %s/EFI/boot/" % (image_dir, iso_dir),
-        #   ignore_error=True)
-
-        run("rm %s/grubx64.efi" % image_dir)
+        # 11-10-2025 kaldırıldı
+        #run("rm %s/grubx64.efi" % image_dir)
+        
         # run("rm %s/EFI/boot/loader.efi" % iso_dir)
         # run("rm %s/EFI/boot/loader.efi" % efi_tmp)
         # grub ################################################################
@@ -1495,7 +1487,21 @@ def make_iso(project, toUSB=False, dev="/dev/sdc1"):
         copy("./data/.miso", "")
         run("cp -p %s/efi.img %s/." % (work_dir, iso_dir))
         run("mkdir %s/boot" % iso_dir)
+        
+        # 11-10-2025 kaldırıldı
         run("ln -s %(iso)s/pisi/pisi.sqfs %(iso)s/boot/pisi.sqfs" % {'iso': iso_dir})
+        
+        # 11-10-2025 eklendi
+        #run("cp -r %s/usr/lib/grub/ %s/boot/grub/" % (image_dir, iso_dir))
+        
+        #run("cp -p ./data/grub.cfg %s/boot/grub/grub.cfg" % (iso_dir))
+        
+        #run("cp -p %s/boot/memtest %s/boot/memtest86+x64.bin" % (image_dir, iso_dir))
+        #run("cp -p %s/grubx64.efi %s/EFI/boot/bootx64.efi" % (image_dir, iso_dir))
+        
+        #run("cp -p %s/EFI/boot/shimx64.efi %s/EFI/boot/bootx64.efi" % (iso_dir, iso_dir))
+        #run("cp -p %s/grubx64.efi %s/EFI/boot/grubx64.efi" % (image_dir, iso_dir))
+        #run("cp -p ./data/grub.cfg %s/EFI/boot/grub.cfg" % (iso_dir))
 
         # INFO:
         # sqfs kurulum yapan yali için kaldırıldı
@@ -1510,7 +1516,7 @@ def make_iso(project, toUSB=False, dev="/dev/sdc1"):
 
         publisher = "Pisi GNU/Linux https://pisilinux.org"
         application = "Pisi GNU/Linux Live Media"
-        label = "PisiLive"
+        label = "PisiLive Minimal"
 
         the_sorted_iso_command = 'genisoimage -f -sort %s/repo/install.order \
         -J -r -l -V "%s" -o "%s" -b isolinux/isolinux.bin \
@@ -1582,6 +1588,38 @@ def make_iso(project, toUSB=False, dev="/dev/sdc1"):
         -publisher "%s" -A "%s" %s' % (
             label, iso_file, iso_dir, publisher, application, iso_dir)
 
+        # new iso command 10-10-2025
+        new_iso_command = 'xorriso -as mkisofs \
+        -f -V "%s" -o "%s" \
+        -J -joliet-long -cache-inodes \
+        -b isolinux/isolinux.bin \
+        -c isolinux/boot.cat \
+        -no-emul-boot \
+        -boot-load-size 4 \
+        -boot-info-table \
+        -isohybrid-mbr /usr/lib/syslinux/bios/isohdpfx.bin \
+        -isohybrid-gpt-basdat \
+        -eltorito-alt-boot \
+        -eltorito-platform efi \
+        -e EFI/boot/bootx64.efi \
+        -no-emul-boot \
+        -publisher "%s" -A "%s" "%s"' % (
+            label, iso_file, publisher, application, iso_dir)
+
+        new_iso = 'xorriso -as mkisofs \
+        -f -V "%s" -o "%s" \
+        -J -joliet-long -cache-inodes \
+        -b isolinux/isolinux.bin \
+        -c isolinux/boot.cat \
+        -no-emul-boot \
+        -boot-load-size 4 \
+        -boot-info-table \
+        -eltorito-alt-boot \
+        -eltorito-platform efi \
+        -e EFI/boot/bootx64.efi \
+        -no-emul-boot \
+        -publisher "%s" -A "%s" "%s"' % (
+            label, iso_file, publisher, application, iso_dir)
 
         # for grub2-mkrescue ---------------------------------------------------
         # the_iso_command = 'grub2-mkrescue -v \
@@ -1603,7 +1641,7 @@ def make_iso(project, toUSB=False, dev="/dev/sdc1"):
                     "\n".join(["%s %d" % (k, v) for (k, v) in sorted_list]))
                 run(the_sorted_iso_command)
         else:
-            run(the_iso_command)
+            run(new_iso)
         # convert iso to a hybrid one
         # run("isohybrid --uefi %s" % iso_file)
         # run("isohybrid %s -b %s" % (
